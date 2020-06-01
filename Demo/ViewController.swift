@@ -45,7 +45,7 @@ class ViewController: UIViewController {
             let characterIndex: Int = layoutManager.characterIndexForGlyph(at: glyphIndex)
             let attributeName = NSAttributedString.Key.link
             let attributeValue = myTextView.textStorage.attribute(attributeName, at: characterIndex, effectiveRange: nil)
-            if let urlString = attributeValue as? String, let url = URL(string: urlString) {
+            if let url = attributeValue as? URL {
                 if UIApplication.shared.canOpenURL(url) {
                     UIApplication.shared.open(url, options: [:], completionHandler: nil)
                 } else {
@@ -55,6 +55,9 @@ class ViewController: UIViewController {
                 textView.isEditable = true
                 textView.becomeFirstResponder()
             }
+        } else {
+            textView.isEditable = true
+            textView.becomeFirstResponder()
         }
     }
     @objc func viewDidTapped(recognizer: UITapGestureRecognizer) {
