@@ -29,6 +29,25 @@ class ViewController: UIViewController {
     //MARK: - Actions
     
     //MARK: - Methods
+    fileprivate func placeCursor(_ myTextView: UITextView, _ location: CGPoint) {
+        // place the cursor on tap position
+        if let tapPosition = myTextView.closestPosition(to: location) {
+            let uiTextRange = myTextView.textRange(from: tapPosition, to: tapPosition)
+            
+            if let start = uiTextRange?.start, let end = uiTextRange?.end {
+                let loc = myTextView.offset(from: myTextView.beginningOfDocument, to: tapPosition)
+                let length = myTextView.offset(from: start, to: end)
+                myTextView.selectedRange = NSMakeRange(loc, length)
+            }
+        }
+    }
+    
+    fileprivate func changeTextViewToNormalState() {
+        textView.isEditable = true
+        textView.dataDetectorTypes = []
+        textView.becomeFirstResponder()
+    }
+    
     @objc func textViewDidTapped(recognizer: UITapGestureRecognizer) {
         guard let myTextView = recognizer.view as? UITextView else {
             return
@@ -52,12 +71,14 @@ class ViewController: UIViewController {
                     print("There is a problem in your link.")
                 }
             } else {
-                textView.isEditable = true
-                textView.becomeFirstResponder()
+                // place the cursor on tap position
+                placeCursor(myTextView, location)
+                
+                // back to normal state
+                changeTextViewToNormalState()
             }
         } else {
-            textView.isEditable = true
-            textView.becomeFirstResponder()
+            changeTextViewToNormalState()
         }
     }
     @objc func viewDidTapped(recognizer: UITapGestureRecognizer) {
