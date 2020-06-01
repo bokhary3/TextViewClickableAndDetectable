@@ -71,7 +71,7 @@ class ViewController: UIViewController {
                     print("There is a problem in your link.")
                 }
             } else {
-                // place the cursor on tap position
+                // place the cursor to tap position
                 placeCursor(myTextView, location)
                 
                 // back to normal state
